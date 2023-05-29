@@ -3,7 +3,7 @@
   "displayName": "ordinator",
   "description": "order selection like a tree",
   "version": "0.0.1",
-  "publisher": "Thiago P. Santos",
+  "publisher": "thiagopsnfg",
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -16,6 +16,11 @@
     "format",
     "text"
   ],
+  "homepage": "https://github.com/thiagopsnfg/ordinator",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/thiagopsnfg/ordinator.git"
+  },
   "activationEvents": [],
   "main": "./extension.js",
   "contributes": {
