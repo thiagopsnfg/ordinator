@@ -2,7 +2,7 @@
   "name": "ordinator",
   "displayName": "ordinator",
   "description": "order selection like a tree",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "icon": "icon.png",
   "publisher": "thiagopsnfg",
   "engines": {

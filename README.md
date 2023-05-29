@@ -2,7 +2,9 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/thiagopsnfg/ordinator/blob/master/LICENSE)
 
-Order selections from smallest to largest
+Order line selections
+
+![screenshot](images/demo.gif)
 
 ## Usage
 
