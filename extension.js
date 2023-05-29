@@ -22,11 +22,13 @@ function activate(context) {
 		}
 		
 		const selectionsSorted = selections.slice().sort((a,b) => {
-			if(editor.document.getText(a) > editor.document.getText(b)) return 1;
-			if(editor.document.getText(a) < editor.document.getText(b)) return -1;
+			if(editor.document.getText(a).length > editor.document.getText(b).length) return 1;
+			if(editor.document.getText(a).length < editor.document.getText(b).length) return -1;
 			return 0;
 		});
-
+		
+		selectionsSorted.forEach(s => console.log(editor.document.getText(s)))
+		
 		return editor.edit(builder => {
 			selections.forEach((selection, idx) => builder.replace(selection, editor.document.getText(selectionsSorted[idx])))
 		});
