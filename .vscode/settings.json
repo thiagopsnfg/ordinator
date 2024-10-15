@@ -1,3 +1,10 @@
 {
-  "svg.preview.background": "editor"
+  "biome.enabled": false,
+  "errorLens.enabled": false,
+  "svg.preview.background": "editor",
+  "eslint.format.enable": true,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
 }
