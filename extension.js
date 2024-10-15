@@ -16,12 +16,30 @@ function activate(context) {
     if (!editor) return; // No open text editor
 
     const selections = editor.selections;
+	let selectedLines = [];
 
-		if (selections.length < 2) {
-			return vscode.window.showErrorMessage(`Select more then one line to order`);
+		if (selections.length < 1) {
+			return vscode.window.showErrorMessage(`Select something to order`);
 		}
+
+		if (selections.length === 1) {
+			const selection = selections[0];
+
+			if(selection.isSingleLine){
+				return vscode.window.showErrorMessage(`Select more than one line to order`);
+			}
+
+			for (let lineNumber = selection.start.line; lineNumber <= selection.end.line; lineNumber++) {
+				const line = editor.document.lineAt(lineNumber);
+				const range = new vscode.Range(line.range.start, line.range.end);
+				selectedLines.push(range);
+			}
+		} else {
+			selectedLines = selections;
+		}
+
 		
-		const selectionsSorted = selections.slice().sort((a,b) => {
+		const selectionsSorted = selectedLines.slice().sort((a,b) => {
 			if(editor.document.getText(a).length > editor.document.getText(b).length) return 1;
 			if(editor.document.getText(a).length < editor.document.getText(b).length) return -1;
 			return 0;
@@ -30,7 +48,7 @@ function activate(context) {
 		selectionsSorted.forEach(s => console.log(editor.document.getText(s)))
 		
 		return editor.edit(builder => {
-			selections.forEach((selection, idx) => builder.replace(selection, editor.document.getText(selectionsSorted[idx])))
+			selectedLines.forEach((selection, idx) => builder.replace(selection, editor.document.getText(selectionsSorted[idx])))
 		});
 	});
 
