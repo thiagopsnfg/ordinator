@@ -1,5 +1,5 @@
 
-# <img src="./images/icon.png" width="35" align="top"/> Ordinator [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/thiagopsnfg/ordinator/blob/master/LICENSE)
+# <img src="images/icon.png" width="35" align="top"/> Ordinator [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/thiagopsnfg/ordinator/blob/master/LICENSE)
 
 ### The easiest way to sort any selection you have in your project, whether it's your imports, exports or any other selection
 
