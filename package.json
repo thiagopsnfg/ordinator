@@ -2,7 +2,7 @@
   "name": "ordinator",
   "displayName": "ordinator",
   "description": "order selection like a tree",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "icon": "icon.png",
   "publisher": "thiagopsnfg",
   "engines": {
@@ -19,24 +19,26 @@
   ],
   "homepage": "https://github.com/thiagopsnfg/ordinator",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/thiagopsnfg/ordinator.git"
+    "type": "git",
+    "url": "https://github.com/thiagopsnfg/ordinator.git"
   },
   "activationEvents": [],
   "main": "./extension.js",
   "contributes": {
-    "commands": [{
-      "command": "extension.orderSelection",
-      "title": "Order Selection"
-    }],
+    "commands": [
+      {
+        "command": "extension.orderSelection",
+        "title": "Order Selection"
+      }
+    ],
     "keybindings": [
       {
-          "command": "extension.orderSelection",
-          "key": "ctrl+alt+o",
-          "mac": "cmd+alt+o",
-          "when": "editorTextFocus"
+        "command": "extension.orderSelection",
+        "key": "ctrl+alt+o",
+        "mac": "cmd+alt+o",
+        "when": "editorTextFocus"
       }
-  ]
+    ]
   },
   "scripts": {
     "lint": "eslint .",
