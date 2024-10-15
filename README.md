@@ -1,30 +1,35 @@
-# Ordinator
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/thiagopsnfg/ordinator/blob/master/LICENSE)
+# <img src="./images/icon.svg" width="35" align="top"/> Ordinator [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/thiagopsnfg/ordinator/blob/master/LICENSE)
 
-Order line selections
+### The easiest way to sort any selection you have in your project, whether it's your imports, exports or any other selection
 
-![screenshot](images/demo.gif)
+## Usage 📚
 
-## Usage
+#### Order line with vertical selection. (vscode vertical selection) 📏
 
-### Default Keymap
+![screenshot](images/vertical_selection.gif)
 
-Win\Linux:  
+#### Order line with normal selection. (mouse or selection) 🖱️
+
+![screenshot](images/normal_selection.gif)
+
+### Default Keymap ⌨️
+
+**Win/Linux:**  
 <kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>O</kbd>  
-<kbd>ctrl</kbd> + <kbd>shift</kbd> + <kbd>O</kbd> => Order    
+<kbd>ctrl</kbd> + <kbd>shift</kbd> + <kbd>O</kbd> => Order
 
-
-Mac:  
+**Mac:**  
 <kbd>cmd</kbd> + <kbd>alt</kbd> + <kbd>O</kbd>  
-<kbd>cmd</kbd> + <kbd>shift</kbd> + <kbd>O</kbd> => Order    
+<kbd>cmd</kbd> + <kbd>shift</kbd> + <kbd>O</kbd> => Order
 
-## Contributors
+## Contributors 👥
+
 * [Thiago P. Santos](https://github.com/thiagopsnfg/)
+* [Gabriel Gouvêa](https://github.com/gouveags)
 
+## LICENSE 📄
 
-## LICENSE
 [LICENSE](./LICENSE)
 
-
-**Enjoy!**
+**Enjoy!** 🎉
