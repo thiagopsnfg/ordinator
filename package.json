@@ -2,7 +2,7 @@
   "name": "ordinator",
   "displayName": "ordinator",
   "description": "order selection like a tree",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "icon": "icon.png",
   "publisher": "thiagopsnfg",
   "engines": {
@@ -22,13 +22,78 @@
     "type": "git",
     "url": "https://github.com/thiagopsnfg/ordinator.git"
   },
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
       {
         "command": "extension.orderSelection",
         "title": "Order Selection"
+      },
+      {
+        "command": "ordinator.sortImports",
+        "title": "Ordinator: Sort Imports"
+      },
+      {
+        "command": "ordinator.sortExports",
+        "title": "Ordinator: Sort Exports"
+      }
+    ],
+    "configuration": {
+      "title": "Ordinator",
+      "properties": {
+        "ordinator.languages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "javascript",
+            "javascriptreact",
+            "typescript",
+            "typescriptreact"
+          ],
+          "markdownDescription": "Language ids where the `source.ordinator.*` code actions (used by `#editor.codeActionsOnSave#`) are available."
+        },
+        "ordinator.sortSpecifiers": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Also sort the names inside braces, e.g. `import { b, a }` → `import { a, b }`."
+        },
+        "ordinator.includeRequire": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Treat top-level `const x = require('...')` statements as imports."
+        }
+      }
+    },
+    "codeActions": [
+      {
+        "languages": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact"
+        ],
+        "actions": [
+          {
+            "kind": "source.ordinator",
+            "title": "Ordinator: Sort imports and exports",
+            "description": "Sort imports and exports by line length"
+          },
+          {
+            "kind": "source.ordinator.sortImports",
+            "title": "Ordinator: Sort imports",
+            "description": "Sort the import/require block by line length"
+          },
+          {
+            "kind": "source.ordinator.sortExports",
+            "title": "Ordinator: Sort exports",
+            "description": "Sort contiguous export blocks by line length"
+          }
+        ]
       }
     ],
     "keybindings": [
@@ -43,7 +108,8 @@
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
-    "test": "node ./test/runTest.js"
+    "test": "node ./test/runTest.js",
+    "test:unit": "mocha --ui tdd test/suite/sorter.test.js"
   },
   "devDependencies": {
     "@types/vscode": "^1.78.0",

@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+const sorter = require('./src/sorter');
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -53,6 +54,93 @@ function activate(context) {
 	});
 
 	context.subscriptions.push(orderSelection);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('ordinator.sortImports', () => applyToActiveEditor([sorter.sortImports])),
+		vscode.commands.registerCommand('ordinator.sortExports', () => applyToActiveEditor([sorter.sortExports]))
+	);
+
+	let providerRegistration = registerProvider();
+	context.subscriptions.push(
+		{ dispose: () => providerRegistration.dispose() },
+		vscode.workspace.onDidChangeConfiguration(event => {
+			if (event.affectsConfiguration('ordinator.languages')) {
+				providerRegistration.dispose();
+				providerRegistration = registerProvider();
+			}
+		})
+	);
+}
+
+const KIND_ALL = vscode.CodeActionKind.Source.append('ordinator');
+const KIND_IMPORTS = KIND_ALL.append('sortImports');
+const KIND_EXPORTS = KIND_ALL.append('sortExports');
+
+function getSorterOptions(document) {
+	const config = vscode.workspace.getConfiguration('ordinator', document);
+	return {
+		sortSpecifiers: config.get('sortSpecifiers', true),
+		includeRequire: config.get('includeRequire', true)
+	};
+}
+
+function computeEdits(document, sorters) {
+	const text = document.getText();
+	const options = getSorterOptions(document);
+	return sorters.flatMap(sort => sort(text, options)).map(e => vscode.TextEdit.replace(
+		new vscode.Range(document.positionAt(e.start), document.positionAt(e.end)),
+		e.newText
+	));
+}
+
+function createAction(document, title, kind, sorters) {
+	const edits = computeEdits(document, sorters);
+	if (!edits.length) return null;
+	const action = new vscode.CodeAction(title, kind);
+	action.edit = new vscode.WorkspaceEdit();
+	action.edit.set(document.uri, edits);
+	return action;
+}
+
+class OrdinatorCodeActionProvider {
+	provideCodeActions(document, _range, context) {
+		const only = context.only;
+		// Source actions are only offered when explicitly requested (on save or "Source Action...").
+		if (!only) return [];
+
+		// `source.ordinator` (e.g. on save) gets one combined edit so both sorts are
+		// computed against the same document version.
+		if (KIND_ALL.contains(only) && only.contains(KIND_IMPORTS) && only.contains(KIND_EXPORTS)) {
+			const action = createAction(document, 'Sort imports and exports', KIND_ALL, [sorter.sortImports, sorter.sortExports]);
+			return action ? [action] : [];
+		}
+
+		const actions = [];
+		if (only.contains(KIND_IMPORTS)) actions.push(createAction(document, 'Sort imports', KIND_IMPORTS, [sorter.sortImports]));
+		if (only.contains(KIND_EXPORTS)) actions.push(createAction(document, 'Sort exports', KIND_EXPORTS, [sorter.sortExports]));
+		return actions.filter(Boolean);
+	}
+}
+
+OrdinatorCodeActionProvider.providedCodeActionKinds = [KIND_ALL, KIND_IMPORTS, KIND_EXPORTS];
+
+function registerProvider() {
+	const languages = vscode.workspace.getConfiguration('ordinator').get('languages', []);
+	return vscode.languages.registerCodeActionsProvider(
+		languages.map(language => ({ language })),
+		new OrdinatorCodeActionProvider(),
+		{ providedCodeActionKinds: OrdinatorCodeActionProvider.providedCodeActionKinds }
+	);
+}
+
+async function applyToActiveEditor(sorters) {
+	const editor = vscode.window.activeTextEditor;
+	if (!editor) return;
+	const edits = computeEdits(editor.document, sorters);
+	if (!edits.length) return;
+	const workspaceEdit = new vscode.WorkspaceEdit();
+	workspaceEdit.set(editor.document.uri, edits);
+	return vscode.workspace.applyEdit(workspaceEdit);
 }
 
 // This method is called when your extension is deactivated
